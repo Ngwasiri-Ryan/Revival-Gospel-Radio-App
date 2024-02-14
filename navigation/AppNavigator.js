@@ -11,6 +11,7 @@ import SecondOnboardingScreen from '../BoardingScreens/SecondOnboardingScreen'
 {/**actual imports of screens */}
 import WelcomeScreen from "../screens/WelcomeScreen";
 import HomeScreen from "../screens/HomeScreen";
+import RadioScreen from "../screens/RadioScreen";
 
 const Stack = createNativeStackNavigator();
 const AppNavigator = () => {
@@ -23,7 +24,7 @@ const AppNavigator = () => {
 				{/**actual screens */}
 				<Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
 				<Stack.Screen name="HomeScreen" component={HomeScreen} />
-			
+				<Stack.Screen name="RadioScreen" component={RadioScreen} />
 				
 			</Stack.Navigator>
 		</NavigationContainer>
