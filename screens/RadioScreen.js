@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, Share, Modal, Button } from 'react-native';
+import { View, Text, TouchableOpacity, Share, Modal, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { AntDesign, FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';
 import { useWindowDimensions } from 'react-native';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
@@ -24,7 +24,7 @@ const RadioScreen = ({ navigation, route }) => {
 
   const startRecording = async () => {
     try {
-      console.log('Requesting permissions..');
+      console.log('Requesting permissions...');
       await Audio.requestPermissionsAsync();
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: true,
@@ -93,57 +93,134 @@ const RadioScreen = ({ navigation, route }) => {
     }
   };
 
+  const injectedJavaScript = `
+    document.body.style.backgroundColor = 'rgb(0,76,110)';
+  `;
+
   return (
-    <View style={{ backgroundColor: '#fc7f03', flex: 1 }}>
-      <View style={{ marginTop: -100, resizeMode: 'contain', width: '100%', height: '85%', borderBottomRadius: 50 }}>
-        <Image source={require('../assets/images/img1.png')} style={{ marginTop: 150, resizeMode: 'contain', width: '100%', height: '55%', top: 30 }} />
-        <View style={{ display: 'flex', top: -height * 0.56 }}>
-          <Text style={{ fontSize: 28, fontWeight: 'bold', color: '#ffff', marginTop: 50, marginBottom: 90, textAlign: 'center', marginHorizontal: 25, marginLeft: 65 }}>
-            Revival Gospel Radio
-          </Text>
-          <Text style={{ color: 'white', fontSize: 25, fontWeight: 800, top: height * 0.36, left: width * 0.35 }}>FM 105.5</Text>
-          <AntDesign name="leftcircle" size={35} color="black" onPress={() => navigation.goBack()} style={{ marginRight: 10, marginLeft: 15, top: -height * 0.17 }} />
+  
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.stationInfo}>
+          <Text style={styles.stationText}>Revival Gospel</Text>
         </View>
       </View>
-      <View style={{ display: 'flex', flexDirection: 'row', gap: 10, width: '100%', height: '8%', top: -height * 0.05 }}>
-        <View style={{ marginLeft: width * 0.13, alignItems: 'center', display: 'flex', flexDirection: 'row', gap: 55 }}>
-
+      <View style={[styles.controlsContainer, { top: -height * 0.05 }]}>
+        <View style={[styles.controls, { marginLeft: width * 0.13 }]}>
           <TouchableOpacity onPress={isRecording ? stopRecording : startRecording}>
             <MaterialIcons name={isRecording ? 'stop' : 'mic'} size={50} color="white" />
-           
-            <Text style={{ fontSize: 15, color: 'green' , top:-height*0.4, left:width*0.57}}>{isRecording ? 'Recording...' : 'Not Recording'}</Text>
-          
+            <Text style={[styles.recordingStatus, { top: -height * 0.4, left: width * 0.57 }]}>
+              {isRecording ? 'Recording...' : 'Not Recording'}
+            </Text>
           </TouchableOpacity>
-
           <TouchableOpacity>
-            <FontAwesome name="heart" size={30} color="white" style={{left:-30}} />
+            <FontAwesome name="heart" size={30} color="white" style={styles.heartIcon} />
           </TouchableOpacity>
-
           <TouchableOpacity onPress={shareMessage}>
             <FontAwesome name="share" size={30} color="white" />
           </TouchableOpacity>
-
           <TouchableOpacity>
             <Entypo name="cross" size={30} color="white" />
           </TouchableOpacity>
-
         </View>
       </View>
-      <WebView source={{ uri: url }} />
-
+      <WebView source={{ uri: url }} injectedJavaScript={injectedJavaScript} />
       <Modal visible={showModal} animationType="slide" transparent>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-          <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
-            <Text style={{ fontSize: 18, marginBottom: 10,fontWeight: "700" ,color: "#fc7f03" }}>Audio Saved at:</Text>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Audio Saved at:</Text>
             <Text>{audioLocation}</Text>
-            <TouchableOpacity onPress={() => setShowModal(false)} style={{backgroundColor:'#fc7f03', width:200,padding:10,marginTop:30,borderRadius:15,alignItems:'center',marginLeft:'10%' }} >
-                   <Text style={{ fontSize: 18, color: "#fff", fontWeight: "700" }}>Close</Text>
-              </TouchableOpacity>
+            <TouchableOpacity onPress={() => setShowModal(false)} style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>Close</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'rgb(0,76,110)',
+    flex: 1,
+    borderBottomRightRadius: 50,
+    borderBottomLeftRadius: 100,
+  },
+  header: {
+    marginTop: -100,
+    resizeMode: 'contain',
+    width: '100%',
+    height: '75%',
+    borderBottomRadius: 50,
+  },
+  stationInfo: {
+    marginTop: 150,
+    width: '80%',
+    height: '45%',
+    top: 30,
+    backgroundColor: 'rgb(9,60,91)',
+    borderRadius: 30,
+    left: 40,
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  stationText: {
+    color: 'white',
+    fontSize: 25,
+    fontWeight: '800',
+  },
+  controlsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    width: '100%',
+    height: '8%',
+  },
+  controls: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 55,
+  },
+  recordingStatus: {
+    fontSize: 15,
+    color: 'green',
+  },
+  heartIcon: {
+    left: -30,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 18,
+    marginBottom: 10,
+    fontWeight: '700',
+    color: '#fc7f03',
+  },
+  modalButton: {
+    backgroundColor: '#fc7f03',
+    width: 200,
+    padding: 10,
+    marginTop: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    marginLeft: '10%',
+  },
+  modalButtonText: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: '700',
+  },
+});
 
 export default RadioScreen;
