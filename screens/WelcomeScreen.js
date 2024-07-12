@@ -7,13 +7,13 @@ import { useWindowDimensions } from 'react-native';
 const WelcomeScreen = ({ navigation }) => {
     const { height , width } = useWindowDimensions();
     return (
-        <View style={{ flex: 1, alignItems: "center" }}>
+        <View style={{ flex: 1, alignItems: "center" , backgroundColor:'rgb(9,60,91)'}}>
             <View style={{display:'flex'}}>   
             <Text
                 style={{
                     fontSize: 28,
                     fontWeight: "bold",
-                    color: "#3c444c",
+                    color: "white",
                     marginTop: 50,
                     marginBottom: 90,
                     textAlign: 'center',
@@ -24,14 +24,7 @@ const WelcomeScreen = ({ navigation }) => {
                Revival Gospel Radio
             </Text>
 
-            <AntDesign name='leftcircle' size={30} color="#fc7f03"
-            onPress={() => navigation.goBack()}
-               style={{
-                top:-height*0.17,
-                marginRight:10,
-                marginLeft:5,
-               }}
-            />
+            
             </View>
             <Image
                 source={require("../assets/images/img4.png")}
@@ -45,7 +38,7 @@ const WelcomeScreen = ({ navigation }) => {
                 style={{
                     fontSize: 24,
                     fontWeight: "bold",
-                    color: "#3c444c",
+                    color: "white",
                     marginTop: 20,
                     marginBottom: 40,
                 }}
@@ -55,9 +48,9 @@ const WelcomeScreen = ({ navigation }) => {
 
             <TouchableOpacity
                //onPress navigating to next screen here
-               onPress={() => navigation.navigate("HomeScreen")}
+               onPress={() => navigation.navigate("Main")}
                 style={{
-                    backgroundColor: "#fc7f03",
+                    backgroundColor: "rgb(113,165,30)",
                     borderRadius: 18,
                     paddingVertical: 18,
                     width: 250,

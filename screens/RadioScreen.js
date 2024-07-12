@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Share, Modal, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Share, Modal, StyleSheet, Image } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';
 import { useWindowDimensions } from 'react-native';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
 
-const RadioScreen = ({ navigation, route }) => {
+const RadioScreen = ({ navigation }) => {
   const { height, width } = useWindowDimensions();
-  const { url } = route.params;
   const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -26,6 +26,7 @@ const RadioScreen = ({ navigation, route }) => {
     try {
       console.log('Requesting permissions...');
       await Audio.requestPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: true,
         playsInSilentModeIOS: true,
@@ -52,7 +53,6 @@ const RadioScreen = ({ navigation, route }) => {
       if (uri) {
         await saveRecording(uri);
         setShowModal(true);
-        setAudioLocation(`${FileSystem.documentDirectory}recording.wav`);
       }
     } catch (error) {
       console.error('Failed to stop recording:', error);
@@ -61,12 +61,15 @@ const RadioScreen = ({ navigation, route }) => {
 
   const saveRecording = async (uri) => {
     try {
-      const fileUri = `${FileSystem.documentDirectory}recording.wav`;
-      await FileSystem.moveAsync({
-        from: uri,
-        to: fileUri,
-      });
-      console.log('Recording saved to:', fileUri);
+      const asset = await MediaLibrary.createAssetAsync(uri);
+      const album = await MediaLibrary.getAlbumAsync('Recordings');
+      if (album == null) {
+        await MediaLibrary.createAlbumAsync('Recordings', asset, false);
+      } else {
+        await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+      }
+      setAudioLocation(asset.uri);
+      console.log('Recording saved to:', asset.uri);
     } catch (error) {
       console.error('Failed to save recording:', error);
     }
@@ -74,9 +77,9 @@ const RadioScreen = ({ navigation, route }) => {
 
   const shareMessage = async () => {
     try {
-      const message = 'Revival Gospel Radio';
+      const message = 'https://bit.ly/3wTZX1R';
       const result = await Share.share({
-        message: message + (recording ? `\nRecorded Audio: ${FileSystem.documentDirectory}recording.wav` : ''),
+        message: message + (audioLocation ? `\nRecorded Audio: ${audioLocation}` : ''),
       });
 
       if (result.action === Share.sharedAction) {
@@ -98,17 +101,19 @@ const RadioScreen = ({ navigation, route }) => {
   `;
 
   return (
-  
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.stationInfo}>
+          <View style={{ height: 150, width: 150 }}>
+            <Image source={require('../assets/images/pic.jpg')} style={{ width: '100%', height: '100%' }} />
+          </View>
           <Text style={styles.stationText}>Revival Gospel</Text>
         </View>
       </View>
       <View style={[styles.controlsContainer, { top: -height * 0.05 }]}>
-        <View style={[styles.controls, { marginLeft: width * 0.13 }]}>
+        <View style={[styles.controls, { marginLeft: width * 0.1 }]}>
           <TouchableOpacity onPress={isRecording ? stopRecording : startRecording}>
-            <MaterialIcons name={isRecording ? 'stop' : 'mic'} size={50} color="white" />
+            <MaterialIcons name={isRecording ? 'stop' : 'mic'} size={35} color="white" />
             <Text style={[styles.recordingStatus, { top: -height * 0.4, left: width * 0.57 }]}>
               {isRecording ? 'Recording...' : 'Not Recording'}
             </Text>
@@ -120,12 +125,13 @@ const RadioScreen = ({ navigation, route }) => {
             <FontAwesome name="share" size={30} color="white" />
           </TouchableOpacity>
           <TouchableOpacity>
-            <Entypo name="cross" size={30} color="white" />
+            <Entypo name="cross" size={20} color="white" />
           </TouchableOpacity>
         </View>
       </View>
-      <WebView source={{ uri: url }} injectedJavaScript={injectedJavaScript} />
-      <Modal visible={showModal} animationType="slide" transparent>
+
+      <WebView source={{ uri: 'https://stream-152.zeno.fm/o3udyj5qxuitv?zs=RuuRuhLoRZOyMZoyIvuppQ'}} injectedJavaScript={injectedJavaScript} />
+      <Modal visible={showModal} animationType="slide" transparent style={{}}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Audio Saved at:</Text>
@@ -144,26 +150,27 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'rgb(0,76,110)',
     flex: 1,
-    borderBottomRightRadius: 50,
-    borderBottomLeftRadius: 100,
+    paddingHorizontal: 20,
   },
   header: {
     marginTop: -100,
     resizeMode: 'contain',
     width: '100%',
     height: '75%',
-    borderBottomRadius: 50,
+    paddingBottom:30,
+    borderBottomColor: 'rgb(113,165,30)',
+    borderBottomWidth: 5,
   },
   stationInfo: {
     marginTop: 150,
-    width: '80%',
-    height: '45%',
+    width: '100%',
+    height: '65%',
     top: 30,
     backgroundColor: 'rgb(9,60,91)',
     borderRadius: 30,
-    left: 40,
-    justifyContent:'center',
-    alignItems:'center',
+    left: -5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   stationText: {
     color: 'white',
@@ -176,19 +183,22 @@ const styles = StyleSheet.create({
     gap: 10,
     width: '100%',
     height: '8%',
+    top:50,
   },
   controls: {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     gap: 55,
+    marginTop:50,
+    position:'absolute'
   },
   recordingStatus: {
     fontSize: 15,
     color: 'green',
   },
   heartIcon: {
-    left: -30,
+    left: -40,
   },
   modalContainer: {
     flex: 1,
@@ -205,10 +215,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
     fontWeight: '700',
-    color: '#fc7f03',
+    color: 'rgb(113,165,30)',
   },
   modalButton: {
-    backgroundColor: '#fc7f03',
+    backgroundColor: 'rgb(113,165,30)',
     width: 200,
     padding: 10,
     marginTop: 30,
