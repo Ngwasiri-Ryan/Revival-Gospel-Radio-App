@@ -1,3 +1,4 @@
+// navigation/AppNavigator.js
 import { StyleSheet } from "react-native";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
@@ -7,9 +8,9 @@ import { FontAwesome } from "@expo/vector-icons";
 
 // Actual imports of screens
 import WelcomeScreen from "../screens/WelcomeScreen";
-import RadioScreen from "../screens/RadioScreen";
-import DiscoverScreen from "../screens/DiscoverScreen"; // Create and import this screen
-import FavoritesScreen from "../screens/FavoritesScreen"; // Create and import this screen
+import HomeScreen from "../screens/HomeScreen";
+import ConnectScreen from "../screens/ConnectScreen";
+import WeekTabs from "../navigation/WeekTabs";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,24 +23,23 @@ const TabNavigator = () => {
           let iconName;
           if (route.name === 'Home') {
             iconName = 'home';
-          } else if (route.name === 'Discover') {
-            iconName = 'search';
-          } else if (route.name === 'Favorites') {
-            iconName = 'heart';
+          } else if (route.name === 'Schedule') {
+            iconName = 'calendar';
+          } else if (route.name === 'Connect') {
+            iconName = 'users';
           }
           return <FontAwesome name={iconName} size={size} color={color} />;
         },
-        headerShown: false, // Ensure headers are hidden for each screen
+        headerShown: false,
       })}
       tabBarOptions={{
         activeTintColor: 'rgb(0,76,110)',
         inactiveTintColor: 'gray',
       }}
-      
     >
-      <Tab.Screen name="Home" component={RadioScreen} />
-      <Tab.Screen name="Discover" component={DiscoverScreen} />
-      <Tab.Screen name="Favorites" component={FavoritesScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Schedule" component={WeekTabs} />
+      <Tab.Screen name="Connect" component={ConnectScreen} />
     </Tab.Navigator>
   );
 };
@@ -48,7 +48,6 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* Actual screens */}
         <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <Stack.Screen name="Main" component={TabNavigator} />
       </Stack.Navigator>

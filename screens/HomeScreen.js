@@ -7,7 +7,7 @@ import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 
-const RadioScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation }) => {
   const { height, width } = useWindowDimensions();
   const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -233,4 +233,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RadioScreen;
+export default HomeScreen;
