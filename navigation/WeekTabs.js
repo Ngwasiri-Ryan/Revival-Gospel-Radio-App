@@ -17,9 +17,9 @@ const WeekTabs = () => {
       <Tab.Navigator
         screenOptions={{
           tabBarLabelStyle: { fontSize: 10 },
-          tabBarActiveTintColor: 'rgb(113, 165, 30)', // Color of the active tab label
+          tabBarActiveTintColor: '#FFD700', // Color of the active tab label
           tabBarInactiveTintColor: 'gray', // Color of the inactive tab labels
-          tabBarIndicatorStyle: { backgroundColor: 'rgb(113, 165, 30)' }, // Color of the tab indicator
+          tabBarIndicatorStyle: { backgroundColor: '#FFD700' }, // Color of the tab indicator
         }}
       >
         {days.map((day) => (
@@ -36,7 +36,7 @@ const WeekTabs = () => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor: '#004C6E',
+    backgroundColor: 'rgb(4,45,73)',
     paddingVertical: 20,
     paddingHorizontal: 10,
     alignItems: 'center',

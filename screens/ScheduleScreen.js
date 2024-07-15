@@ -25,6 +25,7 @@ const ScheduleScreen = ({ selectedDay }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ffff',
   },
   header: {
     fontSize: 24,
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 13,
     fontWeight: 'bold',
-    color: 'rgb(113,165,30)',
+    color: 'rgb(4,45,73)',
   },
   program: {
     fontSize: 13,

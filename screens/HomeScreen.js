@@ -97,7 +97,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const injectedJavaScript = `
-    document.body.style.backgroundColor = 'rgb(0,76,110)';
+    document.body.style.backgroundColor = 'rgb(4,45,73)';
   `;
 
   return (
@@ -129,19 +129,16 @@ const HomeScreen = ({ navigation }) => {
               {isRecording ? 'Recording...' : 'Not Recording'}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <FontAwesome name="heart" size={25} color="white" style={[styles.heartIcon,styles.icon]} />
-          </TouchableOpacity>
+          
           <TouchableOpacity onPress={shareMessage}>
             <FontAwesome name="share" size={25} color="white"  style={[,styles.icon]} />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Entypo name="cross" size={20} color="white" />
-          </TouchableOpacity>
+          
         </View>
       </View>
 
       <WebView source={{ uri: 'https://stream-152.zeno.fm/o3udyj5qxuitv?zs=RuuRuhLoRZOyMZoyIvuppQ'}} injectedJavaScript={injectedJavaScript} />
+
       <Modal visible={showModal} animationType="slide" transparent style={{}}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -159,7 +156,7 @@ const HomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgb(0,76,110)',
+    backgroundColor: 'rgb(4,45,73)',
     flex: 1,
     paddingHorizontal: 20,
   },
@@ -173,7 +170,7 @@ const styles = StyleSheet.create({
   },
   borderLine:{
     borderBottomColor: '#FFD700',
-    borderBottomWidth: 5,
+    borderBottomWidth: 2,
   },
   stationInfo: {
     marginTop: 150,
@@ -197,6 +194,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '8%',
     top:50,
+    left:35,
   },
   controls: {
     alignItems: 'center',

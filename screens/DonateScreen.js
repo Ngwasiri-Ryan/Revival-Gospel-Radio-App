@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     marginBottom: 20,
-    color:'#004C6E',
+    color:'rgb(4,45,73)',
   },
   linkText: {
     fontSize: 18,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     color:'white',
   },
   button:{
-    backgroundColor: '#004C6E',
+    backgroundColor: 'rgb(4,45,73)',
     padding:20,
     justifyContent:'center',
     alignItems:'center',

@@ -20,16 +20,16 @@ const ContactScreen = () => {
     <View style={styles.container}>
       <View style={styles.topSection}>
         <TouchableOpacity style={styles.square} onPress={openDial}>
-          <FontAwesome name="phone" size={24} color="#004C6E" />
+          <FontAwesome name="phone" size={24} color="rgb(4,45,73)" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.square} onPress={openMail}>
-          <FontAwesome name="envelope" size={24} color="#004C6E" />
+          <FontAwesome name="envelope" size={24} color="rgb(4,45,73)" />
         </TouchableOpacity>
       </View>
       <View style={styles.separator} />
       <View style={styles.bottomSection}>
         <Text style={styles.text} onPress={openWebsite}>
-          Visit Website <FontAwesome name="telegram" size={24} color="#004C6E" />
+          Visit Website <FontAwesome name="telegram" size={24} color="rgb(4,45,73)" />
         </Text>
       </View>
     </View>
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     textDecorationLine: 'underline',
-    color:'#004C6E',
+    color:'rgb(4,45,73)',
     paddingTop:20,
   },
 });
