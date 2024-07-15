@@ -1,6 +1,6 @@
 // screens/DonateScreen.js
 import React from 'react';
-import { View, Text, StyleSheet, Linking } from 'react-native';
+import { View, Text, StyleSheet, Linking , TouchableOpacity} from 'react-native';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 
 const DonateScreen = () => {
@@ -13,9 +13,12 @@ const DonateScreen = () => {
       <Text style={styles.supportText}>
         Your support helps us to continue our mission. Consider making a donation to help us keep bringing you the best content.
       </Text>
-      <Text style={styles.linkText} onPress={openWebsite}>
-        Visit our website <FontAwesome name="telegram" size={24} color="#004C6E" />
+      <TouchableOpacity style={styles.button}onPress={openWebsite}>
+      <Text style={styles.linkText} >
+        Donate <FontAwesome name="telegram" size={24} color="#fff" />
       </Text>
+      </TouchableOpacity>
+     
     </View>
   );
 };
@@ -36,12 +39,18 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontSize: 18,
-    textDecorationLine: 'underline',
     color: 'blue',
     flexDirection: 'row',
     alignItems: 'center',
-    color:'#004C6E',
-    paddingTop:30,
+    color:'white',
+  },
+  button:{
+    backgroundColor: '#004C6E',
+    padding:20,
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:10,
+    marginTop:20,
   },
 });
 

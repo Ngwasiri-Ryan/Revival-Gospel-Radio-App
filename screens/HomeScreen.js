@@ -103,26 +103,37 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.stationInfo}>
-          <View style={{ height: 150, width: 150 }}>
-            <Image source={require('../assets/images/pic.jpg')} style={{ width: '100%', height: '100%' }} />
-          </View>
-          <Text style={styles.stationText}>Revival Gospel</Text>
+        <Image  source={require('../assets/images/pic.jpg')} style={styles.stationInfo}/>
+        <View style={{marginTop:40}}>
+        <Text style={styles.stationText}>Revival Gospel Radio</Text>
+        <Text style={styles.stationText} >FM105.5</Text>
         </View>
+       
       </View>
+      <View style={styles.borderLine}>
+      <Image  source={require('../assets/images/img2.jpg')} style={{
+          height:100,
+          width:100,
+          borderRadius:15,
+          marginHorizontal:'35%',
+          top:-10,
+        }}/>
+
+      </View>
+     
       <View style={[styles.controlsContainer, { top: -height * 0.05 }]}>
         <View style={[styles.controls, { marginLeft: width * 0.1 }]}>
           <TouchableOpacity onPress={isRecording ? stopRecording : startRecording}>
-            <MaterialIcons name={isRecording ? 'stop' : 'mic'} size={35} color="white" />
+            <MaterialIcons name={isRecording ? 'stop' : 'mic'} size={30} color="white" />
             <Text style={[styles.recordingStatus, { top: -height * 0.4, left: width * 0.57 }]}>
               {isRecording ? 'Recording...' : 'Not Recording'}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <FontAwesome name="heart" size={30} color="white" style={styles.heartIcon} />
+            <FontAwesome name="heart" size={25} color="white" style={[styles.heartIcon,styles.icon]} />
           </TouchableOpacity>
           <TouchableOpacity onPress={shareMessage}>
-            <FontAwesome name="share" size={30} color="white" />
+            <FontAwesome name="share" size={25} color="white"  style={[,styles.icon]} />
           </TouchableOpacity>
           <TouchableOpacity>
             <Entypo name="cross" size={20} color="white" />
@@ -156,25 +167,27 @@ const styles = StyleSheet.create({
     marginTop: -100,
     resizeMode: 'contain',
     width: '100%',
-    height: '75%',
-    paddingBottom:30,
-    borderBottomColor: 'rgb(113,165,30)',
+    height: '80%',
+    paddingBottom:10,
+   
+  },
+  borderLine:{
+    borderBottomColor: '#FFD700',
     borderBottomWidth: 5,
   },
   stationInfo: {
     marginTop: 150,
-    width: '100%',
-    height: '65%',
+    width: '97%',
+    height: '55%',
     top: 30,
-    backgroundColor: 'rgb(9,60,91)',
     borderRadius: 30,
-    left: -5,
+    left: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
   stationText: {
-    color: 'white',
-    fontSize: 25,
+    color: '#FFD700',
+    fontSize: 20,
     fontWeight: '800',
   },
   controlsContainer: {
@@ -231,6 +244,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '700',
   },
+  icon:{
+    top:-10,
+  }
 });
 
 export default HomeScreen;
