@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Share, Modal, StyleSheet, Image } from 'react-native';
+import { WebView } from 'react-native-webview';
+import { FontAwesome, Entypo, MaterialIcons } from '@expo/vector-icons';
 import { useWindowDimensions } from 'react-native';
 import { Audio } from 'expo-av';
+import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const { height, width } = useWindowDimensions();
   const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [sound, setSound] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [showErrorModal, setShowErrorModal] = useState(false);
   const [audioLocation, setAudioLocation] = useState('');
 
   useEffect(() => {
     return () => {
       if (recording) {
         stopRecording();
-      }
-      if (sound) {
-        sound.unloadAsync();
       }
     };
   }, []);
@@ -78,42 +75,6 @@ const HomeScreen = () => {
     }
   };
 
-  const playRadio = async () => {
-    try {
-      if (sound) {
-        await sound.unloadAsync();
-      }
-      const { sound: newSound } = await Audio.Sound.createAsync(
-        { uri: 'https://stream-152.zeno.fm/o3udyj5qxuitv?zs=RuuRuhLoRZOyMZoyIvuppQ' },
-        { shouldPlay: true }
-      );
-      setSound(newSound);
-      setIsPlaying(true);
-      newSound.setOnPlaybackStatusUpdate((status) => {
-        if (!status.isPlaying) {
-          setIsPlaying(false);
-        }
-      });
-    } catch (error) {
-      if (error.message.includes('503')) {
-        setShowErrorModal(true);
-      } else {
-        console.error('Failed to play radio:', error);
-      }
-    }
-  };
-
-  const stopRadio = async () => {
-    try {
-      if (sound) {
-        await sound.stopAsync();
-        setIsPlaying(false);
-      }
-    } catch (error) {
-      console.error('Failed to stop radio:', error);
-    }
-  };
-
   const shareMessage = async () => {
     try {
       const message = 'https://bit.ly/3wTZX1R';
@@ -135,64 +96,58 @@ const HomeScreen = () => {
     }
   };
 
+  const injectedJavaScript = `
+    document.body.style.backgroundColor = 'rgb(4,45,73)';
+  `;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={require('../assets/images/img.jpg')} style={styles.stationInfo} />
-        <View style={{ marginTop: 40 }}>
-          <Text style={styles.stationText}>Revival Gospel Radio</Text>
-          <Text style={styles.stationText}>FM105.5</Text>
+        <Image  source={require('../assets/images/img.jpg')} style={styles.stationInfo}/>
+        <View style={{marginTop:40}}>
+        <Text style={styles.stationText}>Revival Gospel Radio</Text>
+        <Text style={styles.stationText} >FM105.5</Text>
         </View>
+       
       </View>
       <View style={styles.borderLine}>
-        <Image
-          source={require('../assets/images/img2.jpg')}
-          style={{
-            height: 100,
-            width: 100,
-            borderRadius: 15,
-            marginHorizontal: '35%',
-            top: -10,
-          }}
-        />
+      <Image  source={require('../assets/images/img2.jpg')} style={{
+          height:100,
+          width:100,
+          borderRadius:15,
+          marginHorizontal:'35%',
+          top:-10,
+        }}/>
+
       </View>
-
+     
       <View style={[styles.controlsContainer, { top: -height * 0.05 }]}>
-        <View style={[styles.controls, { marginLeft: width * 0.03 }]}>
+        <View style={[styles.controls, { marginLeft: width * 0.1 }]}>
           <TouchableOpacity onPress={isRecording ? stopRecording : startRecording}>
-            <Image source={require('../assets/images/record.png')} style={styles.icon} />
+            <MaterialIcons name={isRecording ? 'stop' : 'mic'} size={30} color="white" />
+            {/**
+             <Text style={[styles.recordingStatus, { top: -height * 0.4, left: width * 0.57 }]}>
+              {isRecording ? 'Recording...' : 'Not Recording'}
+            </Text>
+             */}
+           
           </TouchableOpacity>
-
-          <TouchableOpacity onPress={isPlaying ? stopRadio : playRadio}>
-            <Image
-              source={isPlaying ? require('../assets/images/pause.png') : require('../assets/images/play.png')}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-
+          
           <TouchableOpacity onPress={shareMessage}>
-            <Image source={require('../assets/images/share.png')} style={styles.icon} />
+            <FontAwesome name="share" size={25} color="white"  style={[,styles.icon]} />
           </TouchableOpacity>
+          
         </View>
       </View>
 
-      <Modal visible={showModal} animationType="slide" transparent>
+      <WebView source={{ uri: 'https://stream-152.zeno.fm/o3udyj5qxuitv?zs=RuuRuhLoRZOyMZoyIvuppQ'}} injectedJavaScript={injectedJavaScript} />
+
+      <Modal visible={showModal} animationType="slide" transparent style={{}}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Audio Saved at:</Text>
             <Text>{audioLocation}</Text>
             <TouchableOpacity onPress={() => setShowModal(false)} style={styles.modalButton}>
-              <Text style={styles.modalButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      <Modal visible={showErrorModal} animationType="slide" transparent>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Oops, we aren't mounted yet</Text>
-            <TouchableOpacity onPress={() => setShowErrorModal(false)} style={styles.modalButton}>
               <Text style={styles.modalButtonText}>Close</Text>
             </TouchableOpacity>
           </View>
@@ -213,9 +168,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: '100%',
     height: '80%',
-    paddingBottom: 10,
+    paddingBottom:10,
+   
   },
-  borderLine: {
+  borderLine:{
     borderBottomColor: 'rgb(233, 136, 14)',
     borderBottomWidth: 2,
   },
@@ -236,23 +192,27 @@ const styles = StyleSheet.create({
   },
   controlsContainer: {
     display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
     width: '100%',
     height: '8%',
-    top: 50,
-    left: -30,
+    top:50,
+    left:35,
   },
   controls: {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
-    gap: 40,
-    position: 'absolute',
-    top: 70,
-    left: 40,
+    gap: 130,
+    marginTop:50,
+    position:'absolute'
   },
-  icon: {
-    width: 70,
-    height: 70,
+  recordingStatus: {
+    fontSize: 15,
+    color: 'green',
+  },
+  heartIcon: {
+    left: -40,
   },
   modalContainer: {
     flex: 1,
@@ -285,6 +245,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '700',
   },
+  icon:{
+    top:0,
+  }
 });
 
 export default HomeScreen;

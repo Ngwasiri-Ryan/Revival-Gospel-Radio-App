@@ -43,14 +43,14 @@ const WelcomeScreen = ({ navigation }) => {
                     marginBottom: 40,
                 }}
             >
-                Start istening to us
+                Start listening to us
             </Text>
 
             <TouchableOpacity
                //onPress navigating to next screen here
                onPress={() => navigation.navigate("Main")}
                 style={{
-                    backgroundColor: "rgb(113,165,30)",
+                    backgroundColor: "rgb(233, 136, 14)",
                     borderRadius: 18,
                     paddingVertical: 18,
                     width: 250,
