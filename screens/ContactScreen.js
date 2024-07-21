@@ -13,7 +13,7 @@ const ContactScreen = () => {
   };
 
   const openWebsite = () => {
-    Linking.openURL('https://www.live1055.fm/').catch((err) => console.error('An error occurred', err));
+    Linking.openURL('https://web.facebook.com/revivalgospelradiofm105.5mhz/?_rdc=1&_rdr').catch((err) => console.error('An error occurred', err));
   };
 
   return (
@@ -29,7 +29,7 @@ const ContactScreen = () => {
       <View style={styles.separator} />
       <View style={styles.bottomSection}>
         <Text style={styles.text} onPress={openWebsite}>
-          Visit Website <FontAwesome name="telegram" size={24} color="rgb(4,45,73)" />
+          Visit Fcebook page <FontAwesome name="telegram" size={24} color="rgb(4,45,73)" />
         </Text>
       </View>
     </View>
