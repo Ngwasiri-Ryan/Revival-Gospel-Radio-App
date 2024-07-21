@@ -5,7 +5,7 @@ import { Entypo, FontAwesome } from '@expo/vector-icons';
 
 const DonateScreen = () => {
   const openWebsite = () => {
-    Linking.openURL('https://www.example.com').catch((err) => console.error('An error occurred', err));
+    Linking.openURL('https://notchpay.me/sPvM8Pmiv').catch((err) => console.error('An error occurred', err));
   };
 
   return (

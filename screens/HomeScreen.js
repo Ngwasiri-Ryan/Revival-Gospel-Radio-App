@@ -171,7 +171,7 @@ const HomeScreen = () => {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={shareMessage}>
-            <Image source={require('../assets/images/share.png')} style={styles.icon} />
+            <Image source={require('../assets/images/share.png')} style={[styles.icon, styles.share]} />
           </TouchableOpacity>
         </View>
       </View>
@@ -254,6 +254,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
   },
+  
   modalContainer: {
     flex: 1,
     justifyContent: 'center',

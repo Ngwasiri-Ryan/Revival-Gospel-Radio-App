@@ -5,11 +5,11 @@ import { FontAwesome, Entypo } from '@expo/vector-icons';
 
 const ContactScreen = () => {
   const openDial = () => {
-    Linking.openURL('tel:+1234567890').catch((err) => console.error('An error occurred', err));
+    Linking.openURL('tel:+237681386680').catch((err) => console.error('An error occurred', err));
   };
 
   const openMail = () => {
-    Linking.openURL('mailto:example@example.com').catch((err) => console.error('An error occurred', err));
+    Linking.openURL('mailto:revivalgosplradiofm@gmail.com').catch((err) => console.error('An error occurred', err));
   };
 
   const openWebsite = () => {
