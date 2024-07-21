@@ -13,7 +13,7 @@ const ContactScreen = () => {
   };
 
   const openWebsite = () => {
-    Linking.openURL('https://www.example.com').catch((err) => console.error('An error occurred', err));
+    Linking.openURL('https://www.live1055.fm/').catch((err) => console.error('An error occurred', err));
   };
 
   return (
