@@ -192,6 +192,7 @@ const HomeScreen = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Oops, we aren't mounted yet</Text>
+            <Text style={styles.modalText}>Try again later</Text>
             <TouchableOpacity onPress={() => setShowErrorModal(false)} style={styles.modalButton}>
               <Text style={styles.modalButtonText}>Close</Text>
             </TouchableOpacity>
@@ -267,24 +268,38 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: 'rgb(4,45,73)',
     padding: 20,
     borderRadius: 10,
+    justifyContent:'center',
+   alignItems:'center',
   },
   modalTitle: {
     fontSize: 18,
     marginBottom: 10,
     fontWeight: '700',
-    color: 'rgb(113,165,30)',
+    color: 'rgb(233, 136, 14)',
+  },
+  modalTitle: {
+    fontSize: 18,
+    marginBottom: 10,
+    fontWeight: '700',
+    color: 'rgb(233, 136, 14)',
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 10,
+    fontWeight: '700',
+    color: '#ffff',
   },
   modalButton: {
-    backgroundColor: 'rgb(113,165,30)',
+    backgroundColor: 'rgb(233, 136, 14)',
     width: 200,
     padding: 10,
     marginTop: 30,
     borderRadius: 15,
     alignItems: 'center',
-    marginLeft: '10%',
+    marginLeft: '5%',
   },
   modalButtonText: {
     fontSize: 18,
