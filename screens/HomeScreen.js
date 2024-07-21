@@ -254,6 +254,11 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
   },
+
+  share:{
+    width: 60,
+    height:60,
+  },
   
   modalContainer: {
     flex: 1,
